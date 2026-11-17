@@ -1,5 +1,0 @@
-create extension if not exists pgcrypto;
-create table users(id uuid primary key default gen_random_uuid(),phone text unique not null,name text,role text not null default 'citizen' check(role in('citizen','officer','admin')));
-create table complaints(id text primary key,category text not null,description text,ward int,address text,lat float8 not null,lng float8 not null,priority text default 'medium',status text default 'open' check(status in('open','assigned','in_progress','resolved','verified')),created_by uuid references users(id),assigned_to uuid references users(id),due_at timestamptz,votes int default 0,rating int,duplicate_of text,photos text[] default '{}',before_photos text[] default '{}',after_photos text[] default '{}',created_at timestamptz default now());
-insert into users(phone,name,role) values('9999999999','Admin','admin'),('8888888881','Rahul','officer'),('8888888882','Meena','officer'),('8888888883','Sanjay','officer');
-insert into storage.buckets(id,name,public) values('complaint-photos','complaint-photos',true) on conflict do nothing;
